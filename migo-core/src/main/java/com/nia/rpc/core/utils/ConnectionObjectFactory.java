@@ -52,21 +52,13 @@ public class ConnectionObjectFactory extends BasePooledObjectFactory<Channel>{
             final ChannelFuture f = bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
                                              .option(ChannelOption.TCP_NODELAY, true)
                                              .connect(ip, port).sync();
-            f.addListener(new ChannelFutureListener() {
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    if (future.isSuccess()) {
-                        LOGGER.info("Connect success {} ", f);
-                    }
+            f.addListener((ChannelFutureListener) future -> {
+                if (future.isSuccess()) {
+                    LOGGER.info("Connect success {} ", f);
                 }
             });
             final Channel channel = f.channel();
-            channel.closeFuture().addListener(new ChannelFutureListener() {
-                public void operationComplete(ChannelFuture future) throws Exception {
-
-                    LOGGER.info("Channel Close {} {}", ip, port);
-
-                }
-            });
+            channel.closeFuture().addListener((ChannelFutureListener) future -> LOGGER.info("Channel Close {} {}", ip, port));
             return channel;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -86,11 +78,7 @@ public class ConnectionObjectFactory extends BasePooledObjectFactory<Channel>{
 
     @Override
     public void destroyObject(PooledObject<Channel> p) throws Exception {
-        p.getObject().close().addListener(new ChannelFutureListener() {
-            public void operationComplete(ChannelFuture future) throws Exception {
-                LOGGER.info("Close Finish");
-            }
-        });
+        p.getObject().close().addListener((ChannelFutureListener) future -> LOGGER.info("Close Finish"));
     }
 
     @Override

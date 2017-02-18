@@ -22,9 +22,12 @@ public class ChannelConf {
         this.host = host;
         this.ip = port;
         this.connStr = host + ":" + ip;
-        channelObjectPool = new GenericObjectPool<Channel>(new ConnectionObjectFactory(host, port));
+        channelObjectPool = new GenericObjectPool<>(new ConnectionObjectFactory(host, port));
     }
 
+    public void close() {
+        channelObjectPool.close();
+    }
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ChannelConf{");

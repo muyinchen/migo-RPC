@@ -24,7 +24,7 @@ public class RpcClientHandler extends SimpleChannelInboundHandler<Response> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Response msg) throws Exception {
-
+        //此处的业务逻辑就是拿到对应id，讲返回信息放入相应blockingQueue中
         BlockingQueue<Response> blockingQueue = responseMap.get(msg.getRequestId());
         if (blockingQueue != null) {
             blockingQueue.put(msg);

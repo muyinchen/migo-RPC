@@ -77,9 +77,7 @@ public class ServerImpl implements Server {
             ChannelFuture future = serverBootstrap.bind(port).sync();
             //接着注册服务
             registerService();
-            LOGGER.info("Server Started At {}", port);
-            started = true;
-            this.channel = future.channel();
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
