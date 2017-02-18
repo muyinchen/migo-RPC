@@ -22,7 +22,7 @@ public class CglibRpcProxy implements RpcProxy {
         return (T)enhancedObject;
     }
     /**
-     * 搞个cglib的静态内部类来做下代理
+     * 搞个静态内部类来做Method的cglib代理
      */
     private static class CglibInteceptor implements MethodInterceptor {
 
