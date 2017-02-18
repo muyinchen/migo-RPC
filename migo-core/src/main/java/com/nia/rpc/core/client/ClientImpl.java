@@ -40,6 +40,7 @@ public class ClientImpl implements Client{
     private static AtomicLong atomicLong = new AtomicLong();
     // 通过此发布的服务名称,来寻找对应的服务提供者
     private String serviceName;
+    private int requestTimeoutMillis = 10 * 1000;
     private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(2);
     private String zkConn;
     private CuratorFramework curatorFramework;
@@ -192,7 +193,7 @@ public class ClientImpl implements Client{
             BlockingQueue<Response> blockingQueue = new ArrayBlockingQueue<>(1);
             ResponseMap.responseMap.put(request.getRequestId(), blockingQueue);
             //poll(time):取走BlockingQueue里排在首位的对象,若不能立即取出,则可以等time参数规定的时间,取不到时返回null
-            int requestTimeoutMillis = 10 * 1000;
+
             return blockingQueue.poll(requestTimeoutMillis, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             throw new RequestTimeoutException("service" + serviceName + " method " + method + " timeout");
@@ -243,4 +244,11 @@ public class ClientImpl implements Client{
         this.zkConn = zkConn;
     }
 
+    public int getRequestTimeoutMillis() {
+        return requestTimeoutMillis;
+    }
+
+    public void setRequestTimeoutMillis(int requestTimeoutMillis) {
+        this.requestTimeoutMillis = requestTimeoutMillis;
+    }
 }
