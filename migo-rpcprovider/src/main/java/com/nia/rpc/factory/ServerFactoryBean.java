@@ -1,3 +1,5 @@
+package com.nia.rpc.factory;
+
 import com.nia.rpc.core.bootstrap.ServerBuilder;
 import com.nia.rpc.core.server.Server;
 import com.nia.rpc.core.server.ServerImpl;
@@ -9,7 +11,7 @@ import org.springframework.beans.factory.FactoryBean;
  * Created by Auser on 2017/2/19.
  */
 @Data
-public class ServerFactory implements FactoryBean<Object>{
+public class ServerFactoryBean implements FactoryBean<Object>{
 
     private Class<?> serviceInterface;
     private Object serviceImpl;

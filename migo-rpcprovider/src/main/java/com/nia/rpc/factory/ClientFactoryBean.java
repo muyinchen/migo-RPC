@@ -1,3 +1,5 @@
+package com.nia.rpc.factory;
+
 import com.nia.rpc.core.bootstrap.ClientBuilder;
 import lombok.Data;
 import org.slf4j.Logger;
