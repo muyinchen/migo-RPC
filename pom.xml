@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>migo-core</module>
+        <module>migorpcprovider</module>
     </modules>
     <packaging>pom</packaging>
 
