@@ -1,5 +1,6 @@
 package com.nia.rpc.example.server;
 
+import com.nia.rpc.core.utils.NetUtils;
 import com.nia.rpc.example.service.HelloWorld;
 import com.nia.rpc.example.service.HelloWorldImpl;
 import com.nia.rpc.factory.ServerFactoryBean;
@@ -26,9 +27,10 @@ public class SpringServerConfig {
         serverFactoryBean.setServiceName("hello");
         serverFactoryBean.setServiceImpl(hello());
         serverFactoryBean.setZkConn("127.0.0.1:2181");
+
         new Thread(() -> {
             try {
-                serverFactoryBean.getObject();
+                serverFactoryBean.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -37,6 +39,7 @@ public class SpringServerConfig {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringServerConfig.class);
+        System.out.println(NetUtils.getLocalIp());
+        SpringApplication.run(SpringServerConfig.class, "--server.port=8082");
     }
 }

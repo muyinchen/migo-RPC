@@ -11,6 +11,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
+import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +74,8 @@ public class ConnectionObjectFactory extends BasePooledObjectFactory<Channel>{
 
     @Override
     public PooledObject<Channel> wrap(Channel obj) {
-        return null;
+        //排查出错，之前直接返回个null，未对方法进行重写，导致出错，拿不出对象
+        return new DefaultPooledObject<>(obj);
     }
 
     @Override

@@ -26,6 +26,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<Request> {
 
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Request msg) throws Exception {
 
+
         String methodName = msg.getMethod();
         Object[] params = msg.getParams();
         Class<?>[] parameterTypes = msg.getParameterTypes();

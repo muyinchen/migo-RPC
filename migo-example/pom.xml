@@ -15,12 +15,18 @@
     <dependencies>
         <dependency>
             <groupId>com.nia.rpc</groupId>
-            <artifactId>migo-rpcprovider</artifactId>
+            <artifactId>migo-rpc-provider</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
             <version>LATEST</version>
         </dependency>
         <dependency>

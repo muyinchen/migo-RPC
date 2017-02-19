@@ -33,7 +33,7 @@ public class SpringClientConfig {
 
     @RequestMapping("/hello")
     public String hello(String say) {
-        return helloWorld.say(say);
+        return helloWorld.say("123");
     }
     public static void main(String[] args) {
         SpringApplication.run(SpringClientConfig.class, "--server.port=8081");

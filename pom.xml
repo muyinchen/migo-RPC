@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>migo-core</module>
-        <module>migo-rpcprovider</module>
         <module>migo-example</module>
+        <module>migo-rpc-provider</module>
     </modules>
     <packaging>pom</packaging>
 

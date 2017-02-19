@@ -89,6 +89,7 @@ public class ServerImpl implements Server {
     private void registerService() {
          zkConn = getZkConn();
          localIp = NetUtils.getLocalIp();
+        System.out.println(localIp);
         String serviceIp=localIp+":"+port;
         CuratorFramework curatorFramework = CuratorFrameworkFactory.newClient(zkConn,
                 new ExponentialBackoffRetry(1000, 3));
@@ -117,6 +118,9 @@ public class ServerImpl implements Server {
                 curatorFramework.create()
                                 .withMode(CreateMode.EPHEMERAL)
                                 .forPath(serviceBasePath+"/"+serviceIp);
+                //这里测试出现无限注册，特么坑死了，忘添加状态修改了
+                registerSuccess = true;
+
             } catch (Exception e) {
                 //出错重新注册(要先删除下节点再重新注册)
                 try {
