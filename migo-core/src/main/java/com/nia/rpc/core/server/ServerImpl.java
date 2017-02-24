@@ -89,7 +89,6 @@ public class ServerImpl implements Server {
     private void registerService() {
          zkConn = getZkConn();
          localIp = NetUtils.getLocalIp();
-        System.out.println(localIp);
         String serviceIp=localIp+":"+port;
         CuratorFramework curatorFramework = CuratorFrameworkFactory.newClient(zkConn,
                 new ExponentialBackoffRetry(1000, 3));

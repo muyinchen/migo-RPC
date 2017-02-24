@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.BlockingQueue;
 
-import static com.nia.rpc.core.utils.ResponseMap.responseMap;
+import static com.nia.rpc.core.utils.ResponseMapHelper.responseMap;
 
 /**
  * Author  知秋

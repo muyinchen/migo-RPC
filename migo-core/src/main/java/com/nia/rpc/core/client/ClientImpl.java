@@ -6,7 +6,7 @@ import com.nia.rpc.core.protocol.Request;
 import com.nia.rpc.core.protocol.Response;
 import com.nia.rpc.core.rpcproxy.CglibRpcProxy;
 import com.nia.rpc.core.rpcproxy.RpcProxy;
-import com.nia.rpc.core.utils.ResponseMap;
+import com.nia.rpc.core.utils.ResponseMapHelper;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -191,7 +191,7 @@ public class ClientImpl implements Client{
             //建立一个ResponseMap，将RequestId作为键，服务端回应的内容作为值保存于BlockingQueue，
             // 最后一起保存在这个ResponseMap中
             BlockingQueue<Response> blockingQueue = new ArrayBlockingQueue<>(1);
-            ResponseMap.responseMap.put(request.getRequestId(), blockingQueue);
+            ResponseMapHelper.responseMap.put(request.getRequestId(), blockingQueue);
             //poll(time):取走BlockingQueue里排在首位的对象,若不能立即取出,则可以等time参数规定的时间,取不到时返回null
 
             return blockingQueue.poll(requestTimeoutMillis, TimeUnit.MILLISECONDS);
@@ -199,12 +199,13 @@ public class ClientImpl implements Client{
             throw new RequestTimeoutException("service" + serviceName + " method " + method + " timeout");
         } finally {
             try {
+                //拿出去的channel记得还回去
                 channelWrapper.getChannelObjectPool().returnObject(channel);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             //删除此键值对，help GC
-            ResponseMap.responseMap.remove(request.getRequestId());
+            ResponseMapHelper.responseMap.remove(request.getRequestId());
         }
     }
 
