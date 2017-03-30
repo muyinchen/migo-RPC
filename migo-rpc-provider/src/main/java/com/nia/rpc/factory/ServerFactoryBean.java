@@ -2,9 +2,10 @@ package com.nia.rpc.factory;
 
 import com.nia.rpc.core.bootstrap.ServerBuilder;
 import com.nia.rpc.core.server.Server;
-import com.nia.rpc.core.server.ServerImpl;
 import lombok.Data;
 import org.springframework.beans.factory.FactoryBean;
+
+import javax.annotation.PreDestroy;
 
 /**
  * Author  知秋
@@ -19,11 +20,11 @@ public class ServerFactoryBean implements FactoryBean<Object>{
     private int port;
     private String serviceName;
     private String zkConn;
-    private ServerImpl rpcServer;
+    private Server rpcServer;
 
     //服务注册并提供
     public void start(){
-        Server rpcServer = ServerBuilder
+        rpcServer = ServerBuilder
                 .builder()
                 .serviceImpl(serviceImpl)
                 .serviceName(serviceName)
@@ -33,6 +34,7 @@ public class ServerFactoryBean implements FactoryBean<Object>{
         rpcServer.start();
     }
     //服务下线
+    @PreDestroy
     public void serviceOffline(){
         rpcServer.shutdown();
     }
