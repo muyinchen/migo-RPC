@@ -90,7 +90,7 @@ public class ServerImpl implements Server {
          zkConn = getZkConn();
          localIp = NetUtils.getLocalIp();
         String serviceIp=localIp+":"+port;
-        CuratorFramework curatorFramework = CuratorFrameworkFactory.newClient(zkConn,
+        curatorFramework = CuratorFrameworkFactory.newClient(zkConn,
                 new ExponentialBackoffRetry(1000, 3));
         curatorFramework.start();
         //连接上zk然后开始注册服务节点
@@ -111,12 +111,14 @@ public class ServerImpl implements Server {
 
         boolean registerSuccess=false;
 
+        serviceRegisterPath = serviceBasePath + "/" + serviceIp;
+
         //如果添加成功，添加标识服务具体路径的节点
         while (!registerSuccess){
             try {
                 curatorFramework.create()
                                 .withMode(CreateMode.EPHEMERAL)
-                                .forPath(serviceBasePath+"/"+serviceIp);
+                                .forPath(serviceRegisterPath);
                 //这里测试出现无限注册，特么坑死了，忘添加状态修改了
                 registerSuccess = true;
 
@@ -129,7 +131,7 @@ public class ServerImpl implements Server {
                 }
                 LOGGER.info("Retry Register ZK, {}", e.getMessage());
                 try {
-                    curatorFramework.delete().forPath(serviceBasePath + "/" + serviceIp);
+                    curatorFramework.delete().forPath(serviceRegisterPath);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -154,7 +156,7 @@ public class ServerImpl implements Server {
     private void unRegister() {
         LOGGER.info("unRegister zookeeper");
         try {
-            curatorFramework.delete().forPath(ZK_DATA_PATH+serviceName+"/"+localIp+":"+port);
+            curatorFramework.delete().forPath(serviceRegisterPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
