@@ -187,11 +187,11 @@ public class ClientImpl implements Client{
 
 
         try {
+            BlockingQueue<Response> blockingQueue = new ArrayBlockingQueue<>(1);
+            ResponseMapHelper.responseMap.put(request.getRequestId(), blockingQueue);
             channel.writeAndFlush(request);
             //建立一个ResponseMap，将RequestId作为键，服务端回应的内容作为值保存于BlockingQueue，
             // 最后一起保存在这个ResponseMap中
-            BlockingQueue<Response> blockingQueue = new ArrayBlockingQueue<>(1);
-            ResponseMapHelper.responseMap.put(request.getRequestId(), blockingQueue);
             //poll(time):取走BlockingQueue里排在首位的对象,若不能立即取出,则可以等time参数规定的时间,取不到时返回null
 
             return blockingQueue.poll(requestTimeoutMillis, TimeUnit.MILLISECONDS);
